@@ -5,8 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from .models import models, schemas
 from .controllers import orders
 from .controllers import orders, sandwiches
-from .controllers import orders, sandwiches, resources, recipes, order_details
 from .controllers import orders, sandwiches, resources
+from .controllers import orders, sandwiches, resources, recipes
+from .controllers import orders, sandwiches, resources, recipes, order_details
 from .dependencies.database import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
@@ -119,3 +120,24 @@ def update_order_detail(order_detail_id: int, order_detail: schemas.OrderDetailU
 @app.delete("/order-details/{order_detail_id}", tags=["OrderDetails"])
 def delete_order_detail(order_detail_id: int, db: Session = Depends(get_db)):
     return order_details.delete(db, order_detail_id)
+
+# Recipes routes
+@app.post("/recipes/", response_model=schemas.Recipe, tags=["Recipes"])
+def create_recipe(recipe: schemas.RecipeCreate, db: Session = Depends(get_db)):
+    return recipes.create(db=db, recipe=recipe)
+
+@app.get("/recipes/", response_model=list[schemas.Recipe], tags=["Recipes"])
+def read_recipes(db: Session = Depends(get_db)):
+    return recipes.read_all(db)
+
+@app.get("/recipes/{recipe_id}", response_model=schemas.Recipe, tags=["Recipes"])
+def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
+    return recipes.read_one(db, recipe_id=recipe_id)
+
+@app.put("/recipes/{recipe_id}", response_model=schemas.Recipe, tags=["Recipes"])
+def update_recipe(recipe_id: int, recipe: schemas.RecipeUpdate, db: Session = Depends(get_db)):
+    return recipes.update(db, recipe_id, recipe)
+
+@app.delete("/recipes/{recipe_id}", tags=["Recipes"])
+def delete_recipe(recipe_id: int, db: Session = Depends(get_db)):
+    return recipes.delete(db, recipe_id)
