@@ -68,7 +68,7 @@ def read_sandwiches(db: Session = Depends(get_db)):
     return sandwiches.read_all(db)
 
 @app.get("/sandwiches/{sandwich_id}", response_model=schemas.Sandwich, tags=["Sandwiches"])
-def read_sandwich(sandwich_id: int, db: Session = Depends(get_db)):
+def read_one_sandwich(sandwich_id: int, db: Session = Depends(get_db)):
     return sandwiches.read_one(db, sandwich_id=sandwich_id)
 
 @app.put("/sandwiches/{sandwich_id}", response_model=schemas.Sandwich, tags=["Sandwiches"])
@@ -89,7 +89,7 @@ def read_resources(db: Session = Depends(get_db)):
     return resources.read_all(db)
 
 @app.get("/resources/{resource_id}", response_model=schemas.Resource, tags=["Resources"])
-def read_resource(resource_id: int, db: Session = Depends(get_db)):
+def read_one_resource(resource_id: int, db: Session = Depends(get_db)):
     return resources.read_one(db, resource_id=resource_id)
 
 @app.put("/resources/{resource_id}", response_model=schemas.Resource, tags=["Resources"])
@@ -110,7 +110,7 @@ def read_order_details(db: Session = Depends(get_db)):
     return order_details.read_all(db)
 
 @app.get("/order-details/{order_detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
-def read_order_detail(order_detail_id: int, db: Session = Depends(get_db)):
+def read_one_order_detail(order_detail_id: int, db: Session = Depends(get_db)):
     return order_details.read_one(db, order_detail_id=order_detail_id)
 
 @app.put("/order-details/{order_detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
@@ -131,7 +131,7 @@ def read_recipes(db: Session = Depends(get_db)):
     return recipes.read_all(db)
 
 @app.get("/recipes/{recipe_id}", response_model=schemas.Recipe, tags=["Recipes"])
-def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
+def read_one_recipe(recipe_id: int, db: Session = Depends(get_db)):
     return recipes.read_one(db, recipe_id=recipe_id)
 
 @app.put("/recipes/{recipe_id}", response_model=schemas.Recipe, tags=["Recipes"])

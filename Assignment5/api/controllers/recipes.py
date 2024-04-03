@@ -1,7 +1,6 @@
-# The import statements should reflect your project structure
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from ..models import models, schemas  # Update the import path if necessary
+from ..models import models, schemas
 
 def create(db: Session, recipe: schemas.RecipeCreate):
     db_recipe = models.Recipe(
