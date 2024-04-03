@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .models import models, schemas
 from .controllers import orders
 from .controllers import orders, sandwiches
+from .controllers import orders, sandwiches, resources, recipes, order_details
 from .controllers import orders, sandwiches, resources
 from .dependencies.database import engine, get_db
 
@@ -97,3 +98,24 @@ def update_resource(resource_id: int, resource: schemas.ResourceUpdate, db: Sess
 @app.delete("/resources/{resource_id}", tags=["Resources"])
 def delete_resource(resource_id: int, db: Session = Depends(get_db)):
     return resources.delete(db, resource_id)
+
+# Order Details routes
+@app.post("/order-details/", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def create_order_detail(order_detail: schemas.OrderDetailCreate, db: Session = Depends(get_db)):
+    return order_details.create(db=db, order_detail=order_detail)
+
+@app.get("/order-details/", response_model=list[schemas.OrderDetail], tags=["OrderDetails"])
+def read_order_details(db: Session = Depends(get_db)):
+    return order_details.read_all(db)
+
+@app.get("/order-details/{order_detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def read_order_detail(order_detail_id: int, db: Session = Depends(get_db)):
+    return order_details.read_one(db, order_detail_id=order_detail_id)
+
+@app.put("/order-details/{order_detail_id}", response_model=schemas.OrderDetail, tags=["OrderDetails"])
+def update_order_detail(order_detail_id: int, order_detail: schemas.OrderDetailUpdate, db: Session = Depends(get_db)):
+    return order_details.update(db, order_detail_id, order_detail)
+
+@app.delete("/order-details/{order_detail_id}", tags=["OrderDetails"])
+def delete_order_detail(order_detail_id: int, db: Session = Depends(get_db)):
+    return order_details.delete(db, order_detail_id)
